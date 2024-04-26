@@ -24,9 +24,11 @@ public class OpenAIApiService {
     public String getResponse(String prompt) {
         try {
             RestTemplate restTemplate = new RestTemplate();
-            String json = "{\"prompt\": \"" + prompt + "\", \"max_tokens\": 150}";
 
-            var headers = new HttpHeaders();
+            // Adjust the JSON to include the "messages" array
+            String json = "{\"model\": \"gpt-4\", \"messages\": [{\"role\": \"user\", \"content\": \"" + prompt + "\"}]}";
+
+            HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.set("Authorization", "Bearer " + apiKey);
 
@@ -38,4 +40,5 @@ public class OpenAIApiService {
             return "Ошибка: " + e.getStatusCode() + " - " + e.getResponseBodyAsString();
         }
     }
+
 }
